@@ -1,0 +1,40 @@
+{
+	"source": {
+    "include": [ "YodlrClient/YodlrClient.js", "YodlrClient/YodlrClientRoom.js", "YodlrClient/README.md" ]
+  },
+	"tags": {
+		"allowUnknownTags" : true
+	},
+	"plugins": ["plugins/markdown"],
+	"opts": {
+    "template": "YodlrClient/docsTemplate/",
+    "destination": "./site/static/docs/"
+  },
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true,
+		"default": {
+			"outputSourceFiles" : true
+		},
+		"applicationName": "Speakit.io",
+		"disqus": "",
+		"googleAnalytics": "",
+		"openGraph": {
+			"title": "",
+			"type": "website",
+			"image": "",
+			"site_name": "",
+			"url": ""
+		},
+		"meta": {
+			"title": "",
+			"description": "",
+			"keyword": ""
+		}
+	},
+	"markdown": {
+		"parser": "gfm",
+		"hardwrap": true,
+		"tags": ["examples"]
+	}
+}
