@@ -8,7 +8,7 @@ var AudioClient = require('./AudioClient/AudioClient.js');
 var Metric = require('./YodlrMetric');
 var SoundEffectMgr = require('sound-effect-manager');
 var sm = new SoundEffectMgr();
-sm.loadFile('/static/sounds/test_sound.mp3', 'sound_test');
+sm.loadFile('/sounds/test_sound.mp3', 'sound_test');
 var WebrtcSources = require('webrtc-sources');
 require('browsernizr/test/websockets');
 require('browsernizr/test/webrtc/getusermedia');
