@@ -4,7 +4,7 @@ var MSG = require('../api/socketio.js');
 var webrtcSupport = require('webrtcsupport');
 var getUserMedia = require('getusermedia');
 var hark = require('hark');
-var Yodeler = require('../AudioRouterClient/AudioRouterClient');
+var AudioRouterClient = require('../AudioRouterClient/AudioRouterClient');
 var audioContext;
 if (webrtcSupport.AudioContext) {
   audioContext = new webrtcSupport.AudioContext();
@@ -105,7 +105,7 @@ AudioClient.prototype._setupAudioRouterClient = function _setupAudioRouterClient
     'participantId:', arcOpts.participant,
     'roomId:', arcOpts.room,
     'accountId:', arcOpts.account);
-  ac.arc = new Yodeler.AudioRouterClient(arcOpts);
+  ac.arc = new AudioRouterClient(arcOpts);
 
   ac.arc.on(MSG.connected, function() {
     debug('AudioRouterClient connected');
