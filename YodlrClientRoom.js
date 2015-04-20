@@ -1,7 +1,7 @@
 var events2 = require('eventemitter2');
 var util = require('util');
 var MSG = require('./api/socketio.js');
-var CC = require('./CaptaincabinetClient/CaptaincabinetClient');
+var CC = require('./CaptainCabinetClient/CaptainCabinetClient');
 var d = require('debug');
 
 /**
