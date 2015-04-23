@@ -1,5 +1,4 @@
-var SocketMsg = require('../api/socketio.js');
-var ClientMsg = require('../api/CaptainCabinetClient.js');
+var MSG = require('../api/CaptainCabinetClient.js');
 var io = require('socket.io-client');
 var upload = require('socket.io-stream');
 var events2 = require('eventemitter2');
@@ -55,24 +54,24 @@ var CaptainCabinetClient = module.exports = function constructor(options) {
 
   CCC.socket.on('connect', function onConnected() {
     CCC._debug('CaptainCabinetClient connected to ' + CCC.server);
-    CCC.emit(ClientMsg.connected, CCC.server);
+    CCC.emit(MSG.connected, CCC.server);
   });
 
   CCC.socket.on('error', function onError(err) {
     CCC._debug('Error', err);
-    CCC.emit(ClientMsg.error, err);
+    CCC.emit(MSG.error, err);
   });
 
-  CCC.socket.on(SocketMsg.fileUploadRequested,
+  CCC.socket.on(MSG.fileUploadRequested,
     function onFileUploadRequested(data) {
     CCC._FileUploadRequested(data);
   });
 
-  CCC.socket.on(SocketMsg.fileUploaded, function onFileUploaded(data) {
+  CCC.socket.on(MSG.fileUploaded, function onFileUploaded(data) {
     CCC._FileUploaded(data);
   });
 
-  CCC.on(ClientMsg.fileUploadRequest, function onFileUploadRequest(data) {
+  CCC.on(MSG.fileUploadRequest, function onFileUploadRequest(data) {
     CCC.FileUploadRequest(data.roomName, data.file, data.userId);
   });
 
@@ -113,7 +112,7 @@ CaptainCabinetClient.prototype.FileUploadRequest =
   tmpFiles[requestId] = {'fileName': fileName,
   'requestId': requestId, 'file': file};
 
-  this.socket.emit(SocketMsg.fileUploadRequest, {'roomName': roomName,
+  this.socket.emit(MSG.fileUploadRequest, {'roomName': roomName,
     'fileName': fileName, 'requestId': requestId, 'userId': userId});
 };
 
@@ -131,15 +130,15 @@ CaptainCabinetClient.prototype.FileUploadRequest =
 CaptainCabinetClient.prototype._FileUploadRequested =
     function _FileUploadRequested(data) {
   this._debug('CaptainCabinetClient received ' +
-    SocketMsg.fileUploadRequested + ': ' + JSON.stringify(data));
+    MSG.fileUploadRequested + ': ' + JSON.stringify(data));
 
   if(data.error) {
-    this.emit(ClientMsg.error, new Error(data));
+    this.emit(MSG.error, new Error(data));
     return;
   }
 
   if(!tmpFiles[data.requestId]) {
-    this.emit(ClientMsg.error,
+    this.emit(MSG.error,
       new Error('Could not locate request: ' + data.requestId));
     return;
   }
@@ -147,7 +146,7 @@ CaptainCabinetClient.prototype._FileUploadRequested =
     tmpFiles[data.requestId].fileId = data.fileId;
   }
 
-  this.emit(ClientMsg.fileUploadRequested, {'fileId': data.fileId,
+  this.emit(MSG.fileUploadRequested, {'fileId': data.fileId,
     'requestId': data.requestId});
 
   this._FileUpload(data.requestId, data.fileId);
@@ -167,13 +166,13 @@ CaptainCabinetClient.prototype._FileUploadRequested =
 
 CaptainCabinetClient.prototype._FileUpload =
     function _FileUpload(requestId, fileId) {
-  this.emit(ClientMsg.fileUpload, {'requestId': requestId,
+  this.emit(MSG.fileUpload, {'requestId': requestId,
     'fileId': fileId });
 
   if(!tmpFiles[requestId] ||
     !tmpFiles[requestId].fileId ||
     tmpFiles[requestId].fileId !== fileId) {
-    this.emit(ClientMsg.error,
+    this.emit(MSG.error,
       new Error('Invalid request or file ID.  requestId: ' +
         requestId + 'fileId: ' + fileId));
     return;
@@ -181,7 +180,7 @@ CaptainCabinetClient.prototype._FileUpload =
 
   var stream = upload.createStream();
 
-  upload(this.socket).emit(SocketMsg.fileUpload, stream,
+  upload(this.socket).emit(MSG.fileUpload, stream,
     {'fileId': fileId, 'requestId': requestId});
 
   if (typeof window === 'undefined') {
@@ -206,16 +205,16 @@ CaptainCabinetClient.prototype._FileUpload =
 
 CaptainCabinetClient.prototype._FileUploaded =
     function _FileUploaded(data) {
-  this._debug('CaptainCabinetClient received ' + SocketMsg.fileUploaded +
+  this._debug('CaptainCabinetClient received ' + MSG.fileUploaded +
     ': ' + JSON.stringify(data));
 
   if(data.error) {
-    this.emit(ClientMsg.error, new Error('FileUpload failed:' + data));
+    this.emit(MSG.error, new Error('FileUpload failed:' + data));
     delete tmpFiles[data.requestId];
     return;
   }
 
-  this.emit(ClientMsg.fileUploaded, {'fileUrl': data.fileUrl,
+  this.emit(MSG.fileUploaded, {'fileUrl': data.fileUrl,
     'fileSize': data.fileSize, 'fileName': data.fileName,
     'fileId': data.fileId});
 
