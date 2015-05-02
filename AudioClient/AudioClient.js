@@ -81,18 +81,27 @@ var AudioClient = module.exports = function AudioClient(opts, callback) {
 };
 util.inherits(AudioClient, events2.EventEmitter2);
 
+function getParameterByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+};
+
 AudioClient.prototype._setupAudioRouterClient = function _setupAudioRouterClient(opts) {
   var ac = this;
 
   if(opts.wsUrlBinary === 'wss://audio.dev-getyodlr.com') {
     opts.wsUrlBinary = opts.wsUrlBinary+':1443';
   }
+
+  var protocol = getParameterByName('protocol') ? getParameterByName('protocol') : 'websocket';
+
   var arcOpts = {
     wsUrlBinary: opts.wsUrlBinary,
     account: opts.accountId,
     room: opts.roomId,
     participant: opts.participantId,
-    rate: NET_SAMPLE_RATE
+    rate: NET_SAMPLE_RATE,
+    protocol: protocol
   };
 
   // reconnecting
@@ -122,6 +131,10 @@ AudioClient.prototype._setupAudioRouterClient = function _setupAudioRouterClient
   ac.arc.on(MSG.reconnectError, function() {
     debug('AudioRouterClient reconnect error');
     ac.emit(MSG.disconnected, MSG.reconnectError);
+  });
+
+  ac.arc.on(MSG.disconnected, function() {
+    ac.emit(MSG.disconnected);
   });
 };
 

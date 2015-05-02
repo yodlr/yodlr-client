@@ -15,6 +15,7 @@ require('browsernizr/test/webrtc/getusermedia');
 var modernizr = require('browsernizr');
 var configPath;
 var debug = require('debug')('yodlr:client');
+var latencyDebug = require('debug')('yodlr:client:latency');
 window.debug = require('debug');
 
 /**
@@ -143,6 +144,7 @@ YodlrClient.prototype.connect = function connect() {
   debug('Attempting to connect to ', spk._url, spk._config.socketioPort);
 
   spk.sock = io.connect(spk._url, {'force new connection': true,
+                                  'transports': ['websocket'],
                                   'port': spk._config.socketioPort});
   spk.sock.on('error', function onSocketError(err) {
     debug('Socket.io error: ', err);
@@ -413,8 +415,20 @@ YodlrClient.prototype._leftRoom = function _leftRoom(data) {
   delete this.rooms[data.room];
 };
 
+YodlrClient.prototype._sendPing = function _sendPing() {
+  var timeStart = Date.now();
+  this.sock.emit(MSG.ping, {timeStart: timeStart});
+};
+
+YodlrClient.prototype._ping = function _ping(data) {
+   this.sock.emit(MSG.pong, data);
+ };
+
 YodlrClient.prototype._pong = function _pong(data) {
-  this.sock.emit(MSG.pong, data);
+  var timeEnd = Date.now();
+  var latency = timeEnd - data.timeStart;
+  latencyDebug('Latency to server: ' + latency);
+  this.emit('latency', latency);
 };
 
 YodlrClient.prototype._receiveChatMessage = function _receiveChatMessage(data) {
@@ -782,7 +796,8 @@ YodlrClient.prototype._setupEventHandlers = function _setupEventHandlers() {
   this.sock.on(MSG.error, this._errorHandler.bind(this));
   this.sock.on(MSG.joinError, this._joinErrorHandler.bind(this));
   this.sock.on(MSG.kill, this._kill.bind(this));
-  this.sock.on(MSG.ping, this._pong.bind(this));
+  this.sock.on(MSG.ping, this._ping.bind(this));
+  this.sock.on(MSG.pong, this._pong.bind(this));
 
   this.sock.on(MSG.joinedRoom, this._joinedRoom.bind(this));
   this.sock.on(MSG.leftRoom, this._leftRoom.bind(this));
@@ -795,6 +810,8 @@ YodlrClient.prototype._setupEventHandlers = function _setupEventHandlers() {
   this.sock.on(MSG.userChanged, this._userChanged.bind(this));
   this.sock.on(MSG.userJoined, this._userJoined.bind(this));
   this.sock.on(MSG.userLeft, this._userLeft.bind(this));
+
+  this._pingInterval = setInterval(this._sendPing.bind(this), 1000);
 };
 
 YodlrClient.prototype.debug = require('debug');
