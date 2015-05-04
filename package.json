@@ -30,7 +30,7 @@
     "webrtc-sources": "^v1.2.0",
     "webrtcsupport": "^2.0.0",
     "wrtc": "git+ssh://git@github.com/js-platform/node-webrtc.git#develop",
-    "ws": "^0.7.1",
+    "ws": "^0.7.1"
   },
   "devDependencies": {}
 }
