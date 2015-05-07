@@ -71,11 +71,6 @@ var YodlrClientRoom = module.exports = function YodlrClientRoom(options) {
       room: sRoom.name,
       data: data
     });
-    sRoom._receiveFileMessage({
-      user: sRoom.user,
-      room: sRoom.name,
-      data: data
-    });
   });
 };
 util.inherits(YodlrClientRoom, events2.EventEmitter2);

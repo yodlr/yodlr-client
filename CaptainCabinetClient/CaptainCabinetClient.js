@@ -50,7 +50,10 @@ var CaptainCabinetClient = module.exports = function constructor(options) {
 
   CCC.server = options.baseUrl + ':' + options.port;
   debug('Connecting to ' + CCC.server);
-  CCC.socket = io.connect(CCC.server, {'force new connection': true });
+  CCC.socket = io.connect(CCC.server, {
+    'force new connection': true,
+    transports: ['websocket']
+  });
 
   CCC.socket.on('connect', function onConnected() {
     CCC._debug('CaptainCabinetClient connected to ' + CCC.server);
