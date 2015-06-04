@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/yodlr/yodlr-client",
   "dependencies": {
-    "audiorouter-client": "git+ssh://git@github.com:yodlr/audiorouter-client.git#v1.1.0",
+    "audiorouter-client": "git+ssh://git@github.com:yodlr/audiorouter-client.git#v2.0.0",
     "browser-request": "~0.3.1",
     "browsernizr": "~1.0.2",
     "captaincabinet-client": "git+ssh://git@github.com:yodlr/captaincabinet-client.git#v2.0.0",
