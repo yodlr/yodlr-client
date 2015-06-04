@@ -1,6 +1,6 @@
 {
   "name": "yodlr-client",
-  "version": "2.0.0",
+  "version": "3.0.2",
   "description": "Yodlr Client",
   "main": "YodlrClient.js",
   "browser": "YodlrClient.js",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/yodlr/yodlr-client",
   "dependencies": {
-    "audiorouter-client": "git+ssh://git@github.com:yodlr/audiorouter-client.git#v1.1.0",
+    "audiorouter-client": "git+ssh://git@github.com:yodlr/audiorouter-client.git#v2.0.1",
     "browser-request": "~0.3.1",
     "browsernizr": "~1.0.2",
     "captaincabinet-client": "git+ssh://git@github.com:yodlr/captaincabinet-client.git#v2.0.0",
@@ -27,7 +27,7 @@
     "hark": "^1.1.2",
     "socket.io-client": "~1.3.5",
     "sound-effect-manager": "^1.0.0",
-    "webrtc-sources": "^v1.2.0",
+    "webrtc-sources": "^v2.0.0",
     "webrtcsupport": "^2.0.0"
   },
   "devDependencies": {}
