@@ -1,6 +1,6 @@
 {
   "name": "yodlr-client",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Yodlr Client",
   "main": "YodlrClient.js",
   "browser": "YodlrClient.js",
