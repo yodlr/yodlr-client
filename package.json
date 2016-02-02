@@ -11,16 +11,16 @@
     "type": "git",
     "url": "https://github.com/yodlr/yodlr-client.git"
   },
-  "author": "",
+  "author": "Ross Kukulinski <ross@getyodlr.com>",
   "bugs": {
     "url": "https://github.com/yodlr/yodlr-client/issues"
   },
   "homepage": "https://github.com/yodlr/yodlr-client",
   "dependencies": {
-    "audiorouter-client": "git+ssh://git@github.com:yodlr/audiorouter-client.git#v5.2.2",
+    "audiorouter-client": "^6.0.0",
     "browser-request": "~0.3.1",
     "browsernizr": "~1.0.2",
-    "captaincabinet-client": "git+ssh://git@github.com:yodlr/captaincabinet-client.git#v2.5.2",
+    "captaincabinet-client": "^3.0.0",
     "debug": "^2.1.3",
     "eventemitter2": "~0.4.13",
     "getusermedia": "^1.2.0",
